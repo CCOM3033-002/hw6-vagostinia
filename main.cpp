@@ -1,135 +1,62 @@
-
-: [Tu Nombre]
-Curso: [Tu Curso]
-Fecha: [Fecha]
-Descripción: 
-    Este programa permite calcular el volumen y el área de la superficie de tres figuras 3D:
-    - Cilindro
-    - Esfera
+// Victoria S. Agostini 801224654 vagostinia
 #include <iostream>
 #include <cmath>  
 #include <iomanip>  
 using namespace std;
 
-// Funciones sobrecargadas para calcular volumen
-
-// Volumen de un cilindro: V = π * r² * h
-double volumen(double radio, double altura) {
-    return M_PI * pow(radio, 2) * altura;
-}
-
-// Volumen de una esfera: V = (4/3) * π * r³
-double volumen(double radio) {
-    return (4.0 / 3.0) * M_PI * pow(radio, 3);
-}
-
-// Volumen de un prisma rectangular: V = largo * ancho * alto
-double volumen(double largo, double ancho, double alto) {
-    return largo * ancho * alto;
-}
-
-// Funciones sobrecargadas para calcular área de la superficie
-
-// Área de la superficie de un cilindro: A = 2πr (r + h)
-double areaSuperficie(double radio, double altura) {
-    return 2 * M_PI * radio * (radio + altura);
-}
-
-// Área de la superficie de una esfera: A = 4πr²
-double areaSuperficie(double radio) {
-    return 4 * M_PI * pow(radio, 2);
-}
-
-// Área de la superficie de un prisma rectangular: A = 2(lw + lh + wh)
-double areaSuperficie(double largo, double ancho, double alto) {
-    return 2 * (largo * ancho + largo * alto + ancho * alto);
-}
-
-// Función para validar entrada y pedir un valor positivo
+// Esta función solicita un valor positivo al usuario y lo valida.
 double pedirPositivo(string mensaje) {
     double valor;
-    while (true) {
+    do {
         cout << mensaje;
         cin >> valor;
-
-        // Verificar si la entrada es un número válido y positivo
-        if (cin.fail() || valor <= 0) {
+        if (valor <= 0 || cin.fail()) { // Verifica si el valor es inválido o negativo
             cout << "Error: Introduzca un número positivo válido.\n";
-            cin.clear();  // Limpiar el error en cin
-            cin.ignore(1000, '\n');  // Descartar la entrada incorrecta
-        } else {
-            return valor;
+            cin.clear(); // Limpia el error en la entrada
+            cin.ignore(1000, '\n'); // Descarta la entrada incorrecta
         }
-    }
+    } while (valor <= 0);
+    return valor;
 }
 
-// Función principal del programa
 int main() {
     char figura, opcion;
-
-    cout << "Este programa calcula el volumen y el área de la superficie de tres figuras.\n";
-
-    // Menú de selección de figura con validación
-    do {
-        cout << "\nEscoja una figura:\n";
-        cout << "  a. Cilindro\n";
-        cout << "  b. Esfera\n";
-        cout << "  c. Prisma rectangular\n";
-        cout << "Selección: ";
-        cin >> figura;
-        figura = tolower(figura);  // Permite ingresar 'A', 'B', 'C' en mayúsculas
-
-        if (figura != 'a' && figura != 'b' && figura != 'c') {
-            cout << "Selección inválida. Intente de nuevo.\n";
-        }
-    } while (figura != 'a' && figura != 'b' && figura != 'c');
-
-    // Menú de selección de cálculo (Volumen o Área de superficie)
-    do {
-        cout << "\nEscoja entre las siguientes opciones:\n";
-        cout << "  a. Volumen\n";
-        cout << "  b. Área de la superficie\n";
-        cout << "Selección: ";
-        cin >> opcion;
-        opcion = tolower(opcion);
-
-        if (opcion != 'a' && opcion != 'b') {
-            cout << "Selección inválida. Intente de nuevo.\n";
-        }
-    } while (opcion != 'a' && opcion != 'b');
-
-    // Formatear la salida para mostrar 2 decimales
-    cout << fixed << setprecision(2);
-
-    // Uso de if-else en lugar de switch para determinar la figura
+    double resultado;
+    
+    // Solicita al usuario que seleccione una figura
+    cout << "Seleccione una figura:\n";
+    cout << "a. Cilindro\nb. Esfera\nc. Prisma rectangular\n";
+    cin >> figura;
+    
+    // Solicita al usuario que elija entre calcular volumen o área de superficie
+    cout << "Seleccione una opción:\n";
+    cout << "a. Volumen\nb. Área de superficie\n";
+    cin >> opcion;
+    
+    cout << fixed << setprecision(2); // Configura la precisión de los decimales
+    
+    // Determina qué figura se seleccionó y calcula volumen o área de superficie
     if (figura == 'a') { // Cilindro
-        double r = pedirPositivo("Ingrese el radio del cilindro: ");
-        double h = pedirPositivo("Ingrese la altura del cilindro: ");
-
-        if (opcion == 'a') {
-            cout << "El volumen del cilindro es " << volumen(r, h) << " unidades cúbicas.\n";
-        } else {
-            cout << "El área de la superficie del cilindro es " << areaSuperficie(r, h) << " unidades cuadradas.\n";
-        }
-    } else if (figura == 'b') { // Esfera
-        double r = pedirPositivo("Ingrese el radio de la esfera: ");
-
-        if (opcion == 'a') {
-            cout << "El volumen de la esfera es " << volumen(r) << " unidades cúbicas.\n";
-        } else {
-            cout << "El área de la superficie de la esfera es " << areaSuperficie(r) << " unidades cuadradas.\n";
-        }
-    } else if (figura == 'c') { // Prisma rectangular
-        double l = pedirPositivo("Ingrese el largo del prisma: ");
-        double w = pedirPositivo("Ingrese el ancho del prisma: ");
-        double h = pedirPositivo("Ingrese la altura del prisma: ");
-
-        if (opcion == 'a') {
-            cout << "El volumen del prisma es " << volumen(l, w, h) << " unidades cúbicas.\n";
-        } else {
-            cout << "El área de la superficie del prisma es " << areaSuperficie(l, w, h) << " unidades cuadradas.\n";
-        }
+        double r = pedirPositivo("Ingrese el radio: ");
+        double h = pedirPositivo("Ingrese la altura: ");
+        resultado = (opcion == 'a') ? (M_PI * r * r * h) : (2 * M_PI * r * (r + h));
+    } 
+    else if (figura == 'b') { // Esfera
+        double r = pedirPositivo("Ingrese el radio: ");
+        resultado = (opcion == 'a') ? ((4.0 / 3.0) * M_PI * r * r * r) : (4 * M_PI * r * r);
+    } 
+    else if (figura == 'c') { // Prisma rectangular
+        double l = pedirPositivo("Ingrese el largo: ");
+        double w = pedirPositivo("Ingrese el ancho: ");
+        double h = pedirPositivo("Ingrese la altura: ");
+        resultado = (opcion == 'a') ? (l * w * h) : (2 * (l * w + l * h + w * h));
+    } 
+    else {
+        cout << "Selección inválida.\n"; // Mensaje de error si la selección es incorrecta
+        return 1;
     }
-
+    
+    // Muestra el resultado final del cálculo
+    cout << "El resultado es: " << resultado << " unidades.\n";
     return 0;
 }
